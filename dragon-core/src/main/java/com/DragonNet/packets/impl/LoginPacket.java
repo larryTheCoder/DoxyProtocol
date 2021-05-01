@@ -4,6 +4,7 @@ import com.DragonNet.packets.protocol.DragonNetProtocol;
 import com.DragonNet.packets.Packet;
 import com.DragonNet.packets.binary.Binary;
 import io.netty.buffer.ByteBuf;
+import lombok.NonNull;
 
 public class LoginPacket extends Packet {
 
@@ -19,7 +20,7 @@ public class LoginPacket extends Packet {
     }
 
     @Override
-    public Packet clone() {
+    public @NonNull Packet clone() {
         return new LoginPacket();
     }
 

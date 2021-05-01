@@ -3,6 +3,7 @@ package com.DragonNet.packets.impl;
 import com.DragonNet.packets.protocol.DragonNetProtocol;
 import com.DragonNet.packets.Packet;
 import io.netty.buffer.ByteBuf;
+import lombok.NonNull;
 
 public class DisconnectPacket extends Packet {
 
@@ -32,7 +33,7 @@ public class DisconnectPacket extends Packet {
     }
 
     @Override
-    public Packet clone() {
+    public @NonNull Packet clone() {
         return new DisconnectPacket();
     }
 }

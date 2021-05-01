@@ -2,7 +2,10 @@ package com.DragonNet.packets.impl;
 
 import com.DragonNet.packets.Packet;
 import io.netty.buffer.ByteBuf;
+import lombok.NonNull;
+import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Base64;
 
@@ -25,7 +28,7 @@ public class GenericPacket extends Packet {
     }
 
     @Override
-    public Packet clone() {
+    public @NonNull Packet clone() {
         return new GenericPacket();
     }
 }

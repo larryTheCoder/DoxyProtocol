@@ -1,7 +1,7 @@
 package com.doxyprotocol.task;
 
 import com.doxyprotocol.DoxyProtocol;
-import dev.waterdog.scheduler.Task;
+import dev.waterdog.waterdogpe.scheduler.Task;
 
 public class PacketPollTask extends Task {
 

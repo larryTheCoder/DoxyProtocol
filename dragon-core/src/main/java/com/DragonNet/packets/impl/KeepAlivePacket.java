@@ -2,6 +2,7 @@ package com.DragonNet.packets.impl;
 
 import com.DragonNet.packets.protocol.DragonNetProtocol;
 import com.DragonNet.packets.Packet;
+import lombok.NonNull;
 
 public class KeepAlivePacket extends Packet {
 
@@ -11,7 +12,7 @@ public class KeepAlivePacket extends Packet {
     }
 
     @Override
-    public Packet clone() {
+    public @NonNull Packet clone() {
         return new KeepAlivePacket();
     }
 

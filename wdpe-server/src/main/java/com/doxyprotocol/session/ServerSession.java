@@ -70,7 +70,7 @@ public class ServerSession implements SessionHandler {
             // Bind and start to accept incoming connections.
             b.bind(serverPort).sync();
 
-            log.info("Currently listening on port: {}", serverPort);
+            log.info("DoxyProtocol is now listening on port: {}", serverPort);
         } catch (Exception err) {
             err.printStackTrace();
         }

@@ -2,10 +2,12 @@ package com.doxyprotocol;
 
 import com.doxyprotocol.session.ServerSession;
 import com.doxyprotocol.task.PacketPollTask;
-import dev.waterdog.plugin.Plugin;
-import dev.waterdog.utils.JsonConfig;
+import dev.waterdog.waterdogpe.plugin.Plugin;
+import dev.waterdog.waterdogpe.utils.YamlConfig;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class DoxyProtocol extends Plugin {
 
     @Getter
@@ -13,12 +15,14 @@ public class DoxyProtocol extends Plugin {
 
     @Override
     public void onEnable() {
-        saveResource("config.json");
+        saveResource("config.yml");
 
-        JsonConfig config = new JsonConfig(getDataFolder() + "config.json");
+        YamlConfig config = new YamlConfig(getDataFolder() + "/config.yml");
         server = new ServerSession(config.getInt("server-port"));
 
         getProxy().getScheduler().scheduleRepeating(new PacketPollTask(this), 1);
+
+        log.info("Enabled DoxyProtocol systems");
     }
 
     @Override
