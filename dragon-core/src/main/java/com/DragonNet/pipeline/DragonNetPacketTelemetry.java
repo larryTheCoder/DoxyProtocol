@@ -1,13 +1,10 @@
 package com.DragonNet.pipeline;
 
 import com.DragonNet.packets.Packet;
-import com.DragonNet.packets.impl.LoginPacket;
 import com.DragonNet.session.SessionHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.SocketChannel;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 
 public class DragonNetPacketTelemetry extends ChannelInboundHandlerAdapter {
 
@@ -21,10 +18,11 @@ public class DragonNetPacketTelemetry extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if (!session.isAuthenticated(channel) && !(msg instanceof LoginPacket)) {
-            return;
-        }
-
         session.queueRawPacket(channel, (Packet) msg);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        session.removeConnection(channel, cause);
     }
 }

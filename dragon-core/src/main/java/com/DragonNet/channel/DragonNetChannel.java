@@ -9,9 +9,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-
-import java.util.Arrays;
 
 public class DragonNetChannel extends ChannelInitializer<SocketChannel> {
 
@@ -27,11 +26,8 @@ public class DragonNetChannel extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) {
         ChannelPipeline pipeline = ch.pipeline();
 
-        if (sslHandler != null) {
-            pipeline.addLast("ssl", sslHandler.newHandler(ch.alloc()));
-        }
-
-        Arrays.asList("a", "b", "c").toArray(new String[0]);
+        SslHandler handler;
+        pipeline.addLast("ssl", handler = sslHandler.newHandler(ch.alloc()));
 
         pipeline.addLast(new LengthFieldBasedFrameDecoder(0x7FFF, 0, 4, 0, 4));
 
@@ -39,7 +35,14 @@ public class DragonNetChannel extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("packetsGroup", new DragonNetPacketDecoder());
         pipeline.addLast("packetTelemetry", new DragonNetPacketTelemetry(ch, sessionChannel));
 
-        sessionChannel.addConnection(ch);
-        ch.closeFuture().addListener((ChannelFutureListener) listener -> sessionChannel.removeConnection(ch));
+        handler.handshakeFuture().addListener((handshake) -> {
+            if (!handshake.isSuccess()) {
+                return;
+            }
+
+            sessionChannel.addConnection(ch);
+
+            ch.closeFuture().addListener((ChannelFutureListener) listener -> sessionChannel.removeConnection(ch, null));
+        });
     }
 }

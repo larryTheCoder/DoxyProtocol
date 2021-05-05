@@ -1,1 +1,2 @@
+# Your server socket port, you can customize this port to whatever you feel correct
 server-port: 8080

@@ -41,6 +41,7 @@
                 <directory>${basedir}/src/main/resources</directory>
                 <includes>
                     <include>*.yml</include>
+                    <include>*.key</include>
                 </includes>
             </resource>
             <resource>
@@ -76,6 +77,8 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml
+                    </dependencyReducedPomLocation>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>

@@ -6,6 +6,4 @@ public interface DragonNetProtocol {
     int DISCONNECT_PACKET = 2;
     int KEEP_ALIVE_PACKET = 3;
 
-    int CONSOLE_COMMAND = 4;
-
 }

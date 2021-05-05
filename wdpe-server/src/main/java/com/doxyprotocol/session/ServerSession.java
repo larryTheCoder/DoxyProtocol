@@ -15,20 +15,24 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Log4j2
 public class ServerSession implements SessionHandler {
 
+    private final ConcurrentHashMap<SocketChannel, PacketHandler> packetGroup = new ConcurrentHashMap<>();
+
     private EventLoopGroup workerGroup;
     private EventLoopGroup bossGroup;
 
-    private final ConcurrentHashMap<SocketChannel, PacketHandler> packetGroup = new ConcurrentHashMap<>();
-
-    public ServerSession(int serverPort) {
-        initSession(serverPort);
+    @SneakyThrows
+    public ServerSession(int serverPort, File certificatePath, File privateKey) {
+        initSession(serverPort, certificatePath, privateKey);
     }
 
     /**
@@ -38,7 +42,7 @@ public class ServerSession implements SessionHandler {
         packetGroup.values().forEach(PacketHandler::processPacket);
     }
 
-    private void initSession(int serverPort) {
+    private void initSession(int serverPort, File certificatePath, File privateKey) {
         // Prepare Epoll if available, the reason why bossGroup is below 4 is that
         // we do not want too much processing on an inbound connection since this is
         // a time-expensive operation, instead we are preparing large number of threads on worker
@@ -59,7 +63,8 @@ public class ServerSession implements SessionHandler {
                 log.debug("No Epoll capabilities found in this machine.");
             }
 
-            SslContext context = SslContextBuilder.forServer(ServerSession.class.getResourceAsStream("/certificate/certificate.crt"), ServerSession.class.getResourceAsStream("/certificate/private_key.key")).build();
+            // Once SSL enabled, we no longer need to verify the client, it already has been verified.
+            SslContext context = SslContextBuilder.forServer(new FileInputStream(certificatePath), new FileInputStream(privateKey)).build();
             ServerBootstrap b = new ServerBootstrap()
                     .group(bossGroup, workerGroup)
                     .channel(classPath)
@@ -98,19 +103,15 @@ public class ServerSession implements SessionHandler {
     }
 
     @Override
-    public void removeConnection(SocketChannel channel) {
-        packetGroup.remove(channel);
-
-        log.info("[{}] has disconnected from the server", channel.localAddress().toString());
-    }
-
-    @Override
-    public boolean isAuthenticated(SocketChannel channel) {
-        PacketHandler group = packetGroup.get(channel);
-        if (group == null) {
-            return false;
+    public void removeConnection(SocketChannel channel, Throwable throwing) {
+        if (packetGroup.remove(channel) == null) {
+            return;
         }
 
-        return group.isAuthenticated();
+        if (throwing == null) {
+            log.info("[{}] has disconnected from the server", channel.localAddress().toString());
+        } else {
+            log.info("[{}] has disconnected from the server, Cause: \"{}\"", channel.localAddress().toString(), throwing.getMessage());
+        }
     }
 }

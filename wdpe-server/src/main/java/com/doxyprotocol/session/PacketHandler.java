@@ -16,8 +16,6 @@ public class PacketHandler {
 
     private final SocketChannel channel;
 
-    private boolean isAuthenticated = false;
-
     public PacketHandler(SocketChannel channel) {
         this.channel = channel;
     }
@@ -30,10 +28,6 @@ public class PacketHandler {
         packetSend.add(packet);
     }
 
-    public boolean isAuthenticated() {
-        return isAuthenticated;
-    }
-
     /**
      * Process the packets received/sent
      */
@@ -42,8 +36,6 @@ public class PacketHandler {
         while ((pk = packetRecv.poll()) != null) {
             if (pk instanceof LoginPacket) {
                 queueSendPacket(pk);
-
-                isAuthenticated = true;
             }
 
             log.info(pk.toString());

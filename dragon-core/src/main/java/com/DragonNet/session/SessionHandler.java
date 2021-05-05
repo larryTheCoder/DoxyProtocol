@@ -30,12 +30,5 @@ public interface SessionHandler {
      *
      * @param channel SocketChannel instance of the disconnected client/server.
      */
-    void removeConnection(SocketChannel channel);
-
-    /**
-     * Checks if the socket provided is authenticated.
-     *
-     * @return {@code true} if the socket is authenticated.
-     */
-    boolean isAuthenticated(SocketChannel channel);
+    void removeConnection(SocketChannel channel, Throwable throwing);
 }
