@@ -12,6 +12,7 @@
     <modules>
         <module>dragon-core</module>
         <module>wdpe-server</module>
+        <module>nukkit-client</module>
     </modules>
 
     <properties>
@@ -27,12 +28,8 @@
 
     <repositories>
         <repository>
-            <id>nukkitx-repo-release</id>
-            <url>https://repo.opencollab.dev/maven-releases/</url>
-        </repository>
-        <repository>
-            <id>nukkitx-repo-snapshot</id>
-            <url>https://repo.opencollab.dev/maven-snapshots/</url>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
             <id>waterdog</id>
@@ -47,17 +44,12 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <!-- Netty provided by WaterdogPE -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.54.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
-            <version>4.39.2</version>
-            <scope>compile</scope>
+            <version>4.1.43.Final</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>dev.waterdog.waterdogpe</groupId>

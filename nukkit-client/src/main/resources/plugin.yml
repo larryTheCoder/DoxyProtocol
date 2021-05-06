@@ -1,0 +1,4 @@
+name: DoxyProtocol
+version: 1.0.1
+main: com.doxyprotocol.DoxyProtocol
+author: "larryTheCoder"

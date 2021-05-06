@@ -1,5 +1,6 @@
 package com.DragonNet.channel;
 
+import com.DragonNet.packets.decoder.IntegerHeaderFrameDecoder;
 import com.DragonNet.pipeline.DragonNetPacketDecoder;
 import com.DragonNet.pipeline.DragonNetPacketTelemetry;
 import com.DragonNet.session.SessionHandler;
@@ -7,7 +8,6 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -29,7 +29,7 @@ public class DragonNetChannel extends ChannelInitializer<SocketChannel> {
         SslHandler handler;
         pipeline.addLast("ssl", handler = sslHandler.newHandler(ch.alloc()));
 
-        pipeline.addLast(new LengthFieldBasedFrameDecoder(0x7FFF, 0, 4, 0, 4));
+        pipeline.addLast(new IntegerHeaderFrameDecoder());
 
         pipeline.addLast("timeout", new ReadTimeoutHandler(60));
         pipeline.addLast("packetsGroup", new DragonNetPacketDecoder());

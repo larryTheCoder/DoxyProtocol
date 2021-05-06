@@ -13,19 +13,24 @@
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
 
-    <artifactId>wdpe-server</artifactId>
+    <artifactId>nukkit-client</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.larryTheCoder</groupId>
-            <artifactId>dragon-core</artifactId>
-            <version>${project.version}</version>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.43.Final</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>DoxyProtocol-server</finalName>
+        <finalName>DoxyProtocol-nukkit</finalName>
 
         <resources>
             <resource>

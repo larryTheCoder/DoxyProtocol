@@ -1,7 +1,6 @@
 package com.doxyprotocol.session;
 
 import com.DragonNet.packets.Packet;
-import com.DragonNet.packets.impl.LoginPacket;
 import io.netty.channel.socket.SocketChannel;
 import lombok.extern.log4j.Log4j2;
 
@@ -34,10 +33,6 @@ public class PacketHandler {
     public void processPacket() {
         Packet pk;
         while ((pk = packetRecv.poll()) != null) {
-            if (pk instanceof LoginPacket) {
-                queueSendPacket(pk);
-            }
-
             log.info(pk.toString());
         }
 

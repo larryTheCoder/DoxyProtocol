@@ -3,7 +3,6 @@ package com.DragonNet.packets;
 import com.DragonNet.packets.impl.GenericPacket;
 import com.DragonNet.packets.impl.DisconnectPacket;
 import com.DragonNet.packets.impl.KeepAlivePacket;
-import com.DragonNet.packets.impl.LoginPacket;
 import com.DragonNet.packets.protocol.DragonNetProtocol;
 
 public class PacketManager {
@@ -30,7 +29,6 @@ public class PacketManager {
 
     static {
         packets[0] = new GenericPacket();
-        packets[DragonNetProtocol.LOGIN_PROTOCOL] = new LoginPacket();
         packets[DragonNetProtocol.DISCONNECT_PACKET] = new DisconnectPacket();
         packets[DragonNetProtocol.KEEP_ALIVE_PACKET] = new KeepAlivePacket();
     }
